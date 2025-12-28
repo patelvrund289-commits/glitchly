@@ -5,7 +5,12 @@ export interface User {
   gender: 'male' | 'female';
   character: string;
   pin: string;
-  gameStats: {};
+  gameStats: {
+    gamesPlayed: number;
+    wins: number;
+    losses: number;
+    highScore: number;
+  };
 }
 
 export function saveUser(user: User): void {

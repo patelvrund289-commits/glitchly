@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { assignRandomCharacter } from '../../utils/assignCharacter';
 import { generatePin } from '../../utils/generatePin';
 import { User, saveUser } from '../../utils/userStorage';
@@ -31,7 +32,12 @@ export default function RegisterPage() {
         gender: gender as 'male' | 'female',
         character: randomCharacter,
         pin,
-        gameStats: {}
+        gameStats: {
+          gamesPlayed: 0,
+          wins: 0,
+          losses: 0,
+          highScore: 0
+        }
       };
 
       // Save user

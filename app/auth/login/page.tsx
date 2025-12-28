@@ -1,10 +1,12 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { getUser, validateLogin } from '../../utils/userStorage';
 import { loginUser } from '../../utils/authGuard';
 
 export default function LoginPage() {
+  const router = useRouter();
   const [username, setUsername] = useState('');
   const [pin, setPin] = useState('');
   const [error, setError] = useState('');
@@ -27,6 +29,7 @@ export default function LoginPage() {
 
     // Success - log in the user and redirect to dashboard
     loginUser(username);
+    setIsLoggedIn(true);
     router.push('/dashboard');
   };
 

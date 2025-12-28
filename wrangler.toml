@@ -1,0 +1,17 @@
+name = "glitchly"
+compatibility_date = "2024-01-01"
+
+[pages_build_output_dir]
+# Directory where @cloudflare/next-on-pages outputs the build
+dir = ".vercel/output/static"
+
+# Pages configuration
+[[pages_build_config]]
+# Build command for Cloudflare Pages
+build_command = "npm run pages:build"
+# Destination directory for the build output
+destination_dir = ".vercel/output/static"
+# Root directory of the project
+root_dir = "."
+# Source files to include
+source = ["."]
