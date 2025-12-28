@@ -6,18 +6,33 @@ import { getCurrentUser } from '../utils/authGuard';
 import { getUser } from '../utils/userStorage';
 import { User } from '../utils/userStorage';
 
-// Force dynamic rendering to avoid localStorage issues during SSR
-export const dynamic = 'force-dynamic';
-
 export default function DashboardPage() {
-  const currentUsername = getCurrentUser();
-  const user = currentUsername ? getUser(currentUsername) : null;
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Access localStorage only after component mounts on the client
+    const currentUsername = getCurrentUser();
+    const userData = currentUsername ? getUser(currentUsername) : null;
+    setUser(userData);
+    setIsLoading(false);
+  }, []);
+
+  if (isLoading) {
+    return (
+      <AuthGuard>
+        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
+          <div className="text-white">Loading profile...</div>
+        </div>
+      </AuthGuard>
+    );
+  }
 
   if (!user) {
     return (
       <AuthGuard>
         <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
-          <div className="text-white">Loading profile...</div>
+          <div className="text-white">User not found. Please log in again.</div>
         </div>
       </AuthGuard>
     );
