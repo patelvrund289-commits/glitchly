@@ -11,6 +11,7 @@ export interface User {
     losses: number;
     highScore: number;
   };
+  points: number;
 }
 
 export function saveUser(user: User): void {
@@ -30,6 +31,30 @@ export function getUser(username: string): User | null {
 export function validateLogin(username: string, pin: string): boolean {
   const user = getUser(username);
   return user ? user.pin === pin : false;
+}
+
+export function updateUserStats(username: string, stats: Partial<User['gameStats']>): void {
+  const users = getAllUsers();
+  if (users[username]) {
+    users[username].gameStats = { ...users[username].gameStats, ...stats };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
+  }
+}
+
+export function getAllUsersForAdmin(): Record<string, User> {
+  return getAllUsers();
+}
+
+export function removeUser(username: string): void {
+  const users = getAllUsers();
+  if (users[username]) {
+    delete users[username];
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
+  }
+}
+
+export function isMasterLogin(username: string, pin: string): boolean {
+  return username === 'admin' && pin === '1234';
 }
 
 function getAllUsers(): Record<string, User> {

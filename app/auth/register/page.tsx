@@ -15,9 +15,20 @@ export default function RegisterPage() {
   const [assignedCharacter, setAssignedCharacter] = useState('');
   const [assignedPin, setAssignedPin] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!username || !gender) return;
+
+    // Client-side validation
+    if (username.length < 3 || username.length > 20) {
+      alert('Username must be between 3 and 20 characters');
+      return;
+    }
+
+    if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+      alert('Username can only contain letters, numbers, and underscores');
+      return;
+    }
 
     try {
       // Assign random character based on gender
